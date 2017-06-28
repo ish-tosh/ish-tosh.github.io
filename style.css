@@ -1,0 +1,454 @@
+/* common style */
+* {
+	font-family: "Hiragino Kaku Gothic ProN","メイリオ", sans-serif;
+}
+html {
+	font-size: 16px;
+}
+body {
+	padding-top: 20px;
+}
+html body {
+	background-color: transparent;
+	background: url(bg.jpg) no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.unit-list .unit {
+	position: relative;
+	display: inline-block;
+	width: 191px;
+	height: 75px;
+	margin: 5px;
+	padding: 5px;
+	background-color: #ffffff;
+	border: 1px solid #333;
+}
+.unit-list .unit .name {
+	font-size: 14px;
+	height: 40px;
+	margin: 0 0 3px 0;
+}
+.unit-list .unit .hp {
+	font-size: 14px;
+	margin: 0;
+}
+.unit-list .unit .edit .btn {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	padding: 2px 5px;
+}
+.mb-10-imp {
+	margin-bottom: 10px!important;
+}
+.tbl-w-50 {
+	float: left;
+	width: 50%;
+}
+
+/* bootstrap overwrite */
+.container {
+	min-width: 1280px!important;
+}
+.table-bordered > tbody > tr > td,
+.table-bordered > tbody > tr > th,
+.table-bordered > tfoot > tr > td,
+.table-bordered > tfoot > tr > th,
+.table-bordered > thead > tr > td,
+.table-bordered > thead > tr > th {
+    border: 1px solid #999;
+}
+.table th {
+	font-weight: normal;
+}
+
+
+.header-band {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	margin: 0;
+	background-color: #333;
+	padding: 5px 10px;
+	min-width: 1280px;
+	z-index: 99;
+}
+.header-band .site-title {
+	font-size: 14px;
+	margin: 0;
+	color: #fff;
+}
+footer {
+	padding: 3px 0;
+	background-color: #333;
+}
+footer p {
+	text-align: center;
+	color: #fff;
+	margin: 0;
+}
+footer a,
+footer a:hover {
+	color: #fff;
+}
+h2 {
+	margin: 0 0 10px 0;
+	padding-left: 5px;
+	font-size: 18px;
+}
+
+.main {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.main .section-block {
+	padding: 0;
+}
+.main .section-block .section-block-inner {
+	margin: 10px;
+	padding: 10px;
+	background-color: rgba(255, 255, 255, .9);
+}
+
+/* sub unit list */
+.sub-unit-list .unit-list {
+	min-height: 20px;
+	cursor: move;
+	margin: 0;
+	padding: 0;
+	font-size:0;
+	list-style: none;
+	border: 1px solid #00B0FF;
+	background-color: #E1F5FE;
+}
+.sub-unit-list .unit-add {
+	margin: 5px 5px 5px 5px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #999;
+}
+.sub-unit-list .unit-add #editing-message {
+	margin: 5px 0 0 0;
+}
+.sub-unit-list .unit-add input[type="text"],
+.sub-unit-list .unit-add input[type="number"] {
+	padding: 3px;
+	margin-right: 10px;
+}
+.sub-unit-list .unit-add input[type="text"] {
+	width: 400px;
+}
+.sub-unit-list .unit-add input[type="number"] {
+	width: 80px;
+}
+.sub-unit-list .unit-sort {
+	margin: 5px 5px 5px 5px;
+}
+
+/* main unit list */
+.main-unit-list .main-deck {
+	float: left;
+}
+.main-unit-list .main-deck h3 {
+	text-align: center;
+	font-size: 16px;
+	margin: 0 5px;
+	background-color: #333;
+	color: #fff;
+	padding: 10px 0;
+}
+.main-unit-list .main-deck .unit-list {
+	text-align: center;
+	cursor: move;
+	margin: 0 5px;
+	padding: 5px 0;
+	font-size:0;
+	list-style: none;
+	width: 232px;
+	height: 268px;
+	border: 1px solid #333;
+	background-color: #ECEFF1;
+}
+.main-unit-list .main-deck .unit-list .unit {
+	text-align: left;
+	margin: 5px 5px 5px 5px;
+	border-bottom: 1px solid #999;
+}
+
+/* delete unit list */
+.delete-unit-list .unit-delete {
+	margin: 5px 5px 5px 5px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #999;
+}
+.delete-unit-list .unit-list {
+	min-height: 30px;
+	cursor: move;
+	margin: 10px 0 0 0;
+	padding: 0;
+	font-size:0;
+	list-style: none;
+	background-color: #ffcdd2;
+	border: 1px solid #ff1744;
+}
+
+/* exec log */
+.exec-log .section-block-inner {
+	background-color: rgba(0, 0, 0, .9)!important;
+	padding: 10px!important;
+	height: 144px;
+	overflow-y: scroll;
+}
+.exec-log .section-block-inner p {
+	color: #00E676;
+	font-size: 12px;
+	margin: 0 0 3px 0;
+}
+
+/* deck-data */
+.deck-data .table {
+	margin-bottom: 0;
+}
+.deck-data .table th {
+	background-color: #333;
+	color: #fff;
+}
+
+/* summon-damage */
+.summon-damage .summons td,
+.summon-damage .summons th {
+	width: 12.5%
+}
+.summon-damage .table {
+	margin: 0;
+}
+.summon-damage .stage-selector {
+	margin: 10px 0 5px 0;
+}
+.summon-damage .stage-selector .stage {
+	display: inline-block;
+	padding: 5px 10px;
+	margin-right: 5px;
+	cursor: pointer;
+	background-color: #607D8B;
+	color: #fff;
+}
+.summon-damage .stage-selector .stage.active {
+	display: inline-block;
+	padding: 5px 10px;
+	background-color: #E91E63;
+}
+.summon-damage .table th {
+	white-space: nowrap;
+	background-color: #333;
+	color: #fff;
+}
+.summon-damage .table .type {
+	text-align: center;
+}
+.summon-damage .table .resources {
+	width: 130px;
+}
+.summon-damage .table .num {
+	width: 80px;
+	text-align: center;
+}
+.summon-damage .table .mapping div {
+	line-height: 10px;
+}
+.summon-damage .table .mapping span {
+	display: inline-block;
+	margin-right: 5px;
+	height: 7px;
+	width: 25px;
+	background-color: #aaa;
+}
+.summon-damage .table .mapping .forces .on {
+	background-color: #00B0FF;
+}
+.summon-damage .table .mapping .units .on {
+	background-color: #E91E63;
+}
+
+/* data manage */
+.data-manage .data-name {
+	margin-bottom: 10px;
+	padding: 3px;
+	width: 100%;
+}
+.data-manage .btn {
+	margin-right: 5px;
+}
+
+
+/* attention */
+.attention ul {
+	list-style: decimal;
+	margin: 0;
+	padding: 0 10px 0 30px;
+}
+.attention ol {
+	list-style: square;
+	margin: 0;
+	padding: 0 10px 0 30px;
+}
+.attention ol li {
+	margin-bottom: 5px;
+}
+.attention ol li .date {
+	font-weight: bold;
+}
+
+/* bug */
+.bug ul {
+	list-style: decimal;
+	margin: 0;
+	padding: 0 10px 0 30px;
+}
+.bug ul span {
+	color: #ff1744;
+}
+
+/* other */
+.other p {
+	margin: 0;
+}
+
+/* cookie manage */
+.cookie-manage {
+}
+
+/* db manage */
+.db-manage input[type="text"] {
+	margin-bottom: 5px;
+	padding: 5px;
+	width: 300px;
+}
+.db-manage input[type="text"] {
+	margin-bottom: 5px;
+	padding: 5px;
+	width: 300px;
+}
+.db-manage #your-db-access-key {
+	color: #E91E63;
+	font-weight: bold;
+}
+
+/* default unit add modal */
+.default-unit-add .modal-dialog {
+	width: 80%;
+}
+.default-unit-add .modal-body input {
+	margin: 0 5px 5px 0;
+}
+
+
+/* Simplicity view right */
+#simplicity-view-right {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	background-color: rgba(0, 0, 0, .9);
+	padding: 5px 10px 20px 10px;
+	width: 100%;
+	z-index: 99;
+	display: none;
+	min-width: 1280px;
+}
+#simplicity-view-right * {
+	color: #ffffff;
+}
+#simplicity-view-right #simplicity-view-right-close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	padding: 10px;
+	cursor: pointer;
+}
+#simplicity-view-right h5 {
+	font-size: 1.2em;
+	margin: 20px 0 5px 0;
+}
+#simplicity-view-right .hp-percentage .hp {
+    display: inline-block;
+    width: 60px;
+    text-align: right;
+}
+#simplicity-view-right table {
+	width: 100%;
+	margin-bottom: 10px;
+}
+#simplicity-view-right table th,
+#simplicity-view-right table td {
+	padding: 4px;
+}
+#simplicity-view-right .first-row {
+	margin-bottom: 5px;
+}
+
+
+/* Simplicity view left */
+#simplicity-view-left {
+	position: fixed;
+	top: 30px;
+	left: 5px;
+	background-color: rgba(0, 0, 0, .8);
+	padding: 5px 10px 15px 10px;
+	width: 300px;
+	z-index: 99;
+	display: none;
+}
+#simplicity-view-left * {
+	color: #ffffff;
+}
+#simplicity-view-left .btn {
+	color: #333333;
+	font-size: 12px;
+	margin: 0 1px 5px 0;
+	padding: 4px 8px;
+}
+#simplicity-view-left .btn-danger {
+	color: #ffffff;
+}
+#simplicity-view-left .btn-info {
+	color: #ffffff;
+}
+#simplicity-view-left #simplicity-view-left-close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	padding: 10px;
+	cursor: pointer;
+}
+#simplicity-view-left h5 {
+	font-size: 1.2em;
+	margin: 20px 0 5px 0;
+}
+#simplicity-view-left .manual-check-log p {
+	font-size: 12px;
+	padding-left: 10px;
+	margin-bottom: 2px;
+	color: #00E676;
+}
+
+.wishlist {
+	display: none;
+}
+.wishlist a {
+	font-size: 12px;
+}
+.wishlist p {
+	position: relative;
+}
+.wishlist .remove {
+	position: absolute;
+	right: 0px;
+	top: 50%;
+	transform: translateY(-50%);
+}
+#wishlist-show {
+	display: none;
+}

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>刻のイシュタリア征戦用防衛デッキ調整用ツール for PC</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+		<meta http-equiv="Pragma" content="no-cache">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta http-equiv="Expires" content="0">
+		<link rel="icon" type="image/vnd.microsoft.icon" href="fav.ico">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+		<link href="style.css" rel="stylesheet">
+		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<script src="script.js"></script>
+		<script>
+			(function (i, s, o, g, r, a, m) {
+				i['GoogleAnalyticsObject'] = r;
+				i[r] = i[r] || function () {
+					(i[r].q = i[r].q || []).push(arguments)
+				}, i[r].l = 1 * new Date();
+				a = s.createElement(o),
+						m = s.getElementsByTagName(o)[0];
+				a.async = 1;
+				a.src = g;
+				m.parentNode.insertBefore(a, m)
+			})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+			ga('create', 'UA-83461182-1', 'auto');
+			ga('send', 'pageview');
+
+		</script>
+	</head>
+	<body>
+		<header class="header-band">
+			<h1 class="site-title">刻のイシュタリア征戦用防衛デッキ調整用ツール for PC</h1>
+		</header>
+		<section id="simplicity-view-left">
+			<i class="fa fa-times" id="simplicity-view-left-close"></i>
+			<h5>デッキ手動チェッカー</h5>
+			<p class="deck-info">
+				現HP：<span class="hp" id="all-hp-sv"></span><br>
+				残ユニ数：<span class="hp" id="another-unit-count-sv"></span><br>
+				残部隊数：<span class="hp" id="another-forces-count-sv"></span><br>
+				タゲ時出現部隊HP：<span class="hp" id="tag-forces-hp-sv"></span>
+				<input type="hidden" id="force-hp-sv">
+				<input type="hidden" id="force-unit-count-sv">
+			</p>
+			<p class="commands">
+				<a class="btn btn-default svl-command" data-damage="0.7">バハ / リヴァ</a>
+				<a class="btn btn-default svl-command" data-damage="0.35">バハ(1/2)</a>
+				<a class="btn btn-default svl-command" data-damage="0.5">オル</a>
+				<a class="btn btn-default svl-command" data-damage="0.25">オル(1/2)</a>
+				<a class="btn btn-default svl-command" data-damage="0.3">ロレ</a>
+				<a class="btn btn-default svl-command" data-damage="0.15">ワルプ</a>
+				<a class="btn btn-default svl-command" data-damage="0.2">タイタン</a>
+				<a class="btn btn-default svl-command" data-damage="0.15">ウルス</a>
+				<a class="btn btn-default svl-command" data-damage="0.075">ウルス(1/2)</a>
+				<a class="btn btn-default svl-command" data-damage="0.3">砲撃</a>
+			</p>
+			<p class="commands">
+				<a class="btn btn-info" id="svl-tag">タゲ部隊確認</a>
+				<a class="btn btn-danger" id="svl-reset">データ初期化</a>
+			</p>
+			<div class="manual-check-log" id="manual-check-log">
+				<h5>手動チェックログ</h5>
+			</div>
+		</section>
+		<section id="simplicity-view-right">
+			<i class="fa fa-times" id="simplicity-view-right-close"></i>
+			<h5>デッキHP割合</h5>
+			<table class="table table-bordered stage-table">
+				<thead>
+					<tr><th>第1部隊合計</th><th>第2部隊合計</th><th>第3部隊合計</th><th>第4部隊合計</th><th>第5部隊合計</th></tr>
+				</thead>
+				<tbody>
+					<tr><td><span id="forces1-full-hp-sv">xx</span>(<span id="forces1-full-percentage-sv">xx.xx%</span>)</td><td><span id="forces2-full-hp-sv">xx</span>(<span id="forces2-full-percentage-sv">xx.xx%</span>)</td><td><span id="forces3-full-hp-sv">xx</span>(<span id="forces3-full-percentage-sv">xx.xx%</span>)</td><td><span id="forces4-full-hp-sv">xx</span>(<span id="forces4-full-percentage-sv">xx.xx%</span>)</td><td><span id="forces5-full-hp-sv">xx</span>(<span id="forces5-full-percentage-sv">xx.xx%</span>)</td></tr>
+				</tbody>
+			</table>
+			<h5>出現部隊数確認</h5>
+			<table class="table table-bordered stage-table first-row">
+				<thead>
+					<tr><th></th><th>バハ</th><th>バハ(1/2)</th><th>リヴァ</th><th>オル</th><th>オル(1/2)</th><th>ロレ</th><th>ウルス</th><th>ウルス(1/2)</th></tr>
+				</thead>
+				<tbody>
+					<tr><th>後タゲ</th><td id="baha-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="baha-h-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="levi-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="or-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="or-h-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="lore-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="vere-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="vere-h-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td></tr>
+					<tr><th>先タゲ</th><td id="baha-tag-sv">xx</td><td id="baha-h-tag-sv">xx</td><td id="levi-tag-sv">xx</td><td id="or-tag-sv">xx</td><td id="or-h-tag-sv">xx</td><td id="lore-tag-sv">xx</td><td id="vere-tag-sv">xx</td><td id="vere-h-tag-sv">xx</td></tr>
+				</tbody>
+			</table>
+			<table class="table table-bordered stage-table">
+				<thead>
+					<tr><th></th><th>タイタン</th><th>ワルプ</th><th>オルロレ</th><th>砲撃</th><th>砲撃x2</th><th>砲撃x3</th><th>砲撃x4</th><th>砲撃x5</th></tr>
+				</thead>
+				<tbody>
+					<tr><th>後タゲ</th><td id="titn-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="walp-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="orlr-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="brag1-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="brag2-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="brag3-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="brag4-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td><td id="brag5-fc-sv">タゲ：x部隊(xユニ)<br>合計出現：x部隊</td></tr>
+					<tr><th>先タゲ</th><td id="titn-tag-sv">xx</td><td id="walp-tag-sv">xx</td><td id="orlr-tag-sv">xx</td><td id="brag1-tag-sv">xx</td><td id="brag2-tag-sv">xx</td><td id="brag3-tag-sv">xx</td><td id="brag4-tag-sv">xx</td><td id="brag5-tag-sv">xx</td></tr>
+				</tbody>
+			</table>
+		</section>
+		<article class="main container">
+			<section class="col-xs-12 section-block sub-unit-list">
+				<div class="section-block-inner">
+					<div class="unit-add">
+						<p id="editing-message">ユニット新規追加</p>
+						<input type="text" id="new-unit-name" class="unit-name" placeholder="Unit name"><input type="number" id="new-unit-hp" class="unit-hp" placeholder="Unit HP"><input type="hidden" id="new-unit-id">
+						<a href="#" id="add-unit" class="btn btn-sm btn-info">確定</a>
+						<a href="#" id="clear-unit" class="btn btn-sm btn-default">クリア</a>
+						<a href="#" class="btn btn-sm btn-default" data-toggle="modal" data-target="#default-unit-add">既定ユニットリスト</a>
+					</div>
+					<div class="unit-sort">
+						<a href="#" id="unit-sort-desc" class="btn btn-sm btn-info">HP降順ソート</a>
+						<a href="#" id="unit-sort-asc" class="btn btn-sm btn-info">HP昇順ソート</a>
+						<a href="#" id="simplicity-view-left-show" class="btn btn-sm btn-danger">手動チェッカー表示</a>
+						<a href="#" id="simplicity-view-right-show" class="btn btn-sm btn-danger">簡易情報表示</a>
+					</div>
+					<ul id="sub-unit-list" class="jquery-ui-sortable unit-list"></ul>
+					<div style="clear: both;"></div>
+				</div>
+			</section>
+			<section id="main-unit-list" class="col-xs-12 section-block main-unit-list">
+				<div class="section-block-inner">
+					<div class="main-deck">
+						<h3>第一部隊</h3>
+						<ul id="deck-1" class="jquery-ui-sortable unit-list">
+						</ul>
+					</div>
+					<div class="main-deck">
+						<h3>第二部隊</h3>
+						<ul id="deck-2" class="jquery-ui-sortable unit-list">
+						</ul>
+					</div>
+					<div class="main-deck">
+						<h3>第三部隊</h3>
+						<ul id="deck-3" class="jquery-ui-sortable unit-list">
+						</ul>
+					</div>
+					<div class="main-deck">
+						<h3>第四部隊</h3>
+						<ul id="deck-4" class="jquery-ui-sortable unit-list">
+						</ul>
+					</div>
+					<div class="main-deck">
+						<h3>第五部隊</h3>
+						<ul id="deck-5" class="jquery-ui-sortable unit-list">
+						</ul>
+					</div>
+					<div style="clear: both;"></div>
+				</div>
+			</section>
+			<section class="col-xs-12 section-block delete-unit-list">
+				<div class="section-block-inner">
+					<div class="unit-delete">
+						<p>ここにユニットを置いて削除ボタンを押下するとユニット情報が削除されます。<br>他の防衛デッキで使われているユニットを削除した場合、防衛ユニットからそのユニットが削除されます。<br>削除ボタンを押すまでは削除は実行されません。</p>
+						<a href="#" id="delete-unit" class="btn btn-sm btn-danger">削除</a>
+					</div>
+					<ul id="delete-unit-list" class="jquery-ui-sortable unit-list"></ul>
+					<div style="clear: both;"></div>
+				</div>
+			</section>
+			<div class="col-xs-5 section-block">
+				<section class="section-block exec-log">
+					<div id="exec-log" class="section-block-inner">
+					</div>
+				</section>
+				<section class="section-block data-manage">
+					<div class="section-block-inner">
+						<h5 style="background-color: #333333;color: #ffffff;margin: 0 0 10px 0;padding: 5px;">デッキ保存</h5>
+						<input type="text" class="data-name" id="data-name" list="data-name-list" placeholder="Please input or select data key."><br>
+						<input type="button" id="data-clear" class="btn btn-sm btn-default" value="クリア">
+						<input type="button" id="data-save" class="btn btn-sm btn-info" value="保存">
+						<input type="button" id="data-load" class="btn btn-sm btn-info" value="読み込み">
+						<input type="button" id="data-delete" class="btn btn-sm btn-danger" value="削除">
+						<datalist id="data-name-list">
+						</datalist>
+					</div>
+				</section>
+			</div>
+			<section class="col-xs-7 section-block deck-data">
+				<div class="section-block-inner">
+					<table class="table table-bordered">
+						<tr><th></th><th>合計HP</th><th>合計%</th><th>%</th><th>%</th><th>%</th></tr>
+						<tr><th>一部隊</th><td id="forces1-full-hp">xxxxx</td><td id="forces1-full-percentage">xx.xx%</td><td id="forces1-1-hp">xx.xx%</td><td id="forces1-2-hp">xx.xx%</td><td id="forces1-3-hp">xx.xx%</td></tr>
+						<tr><th>二部隊</th><td id="forces2-full-hp">xxxxx</td><td id="forces2-full-percentage">xx.xx%</td><td id="forces2-1-hp">xx.xx%</td><td id="forces2-2-hp">xx.xx%</td><td id="forces2-3-hp">xx.xx%</td></tr>
+						<tr><th>三部隊</th><td id="forces3-full-hp">xxxxx</td><td id="forces3-full-percentage">xx.xx%</td><td id="forces3-1-hp">xx.xx%</td><td id="forces3-2-hp">xx.xx%</td><td id="forces3-3-hp">xx.xx%</td></tr>
+						<tr><th>四部隊</th><td id="forces4-full-hp">xxxxx</td><td id="forces4-full-percentage">xx.xx%</td><td id="forces4-1-hp">xx.xx%</td><td id="forces4-2-hp">xx.xx%</td><td id="forces4-3-hp">xx.xx%</td></tr>
+						<tr><th>五部隊</th><td id="forces5-full-hp">xxxxx</td><td id="forces5-full-percentage">xx.xx%</td><td id="forces5-1-hp">xx.xx%</td><td id="forces5-2-hp">xx.xx%</td><td id="forces5-3-hp">xx.xx%</td></tr>
+						<tr><th>合計HP</th><td id="total-hp" colspan="5">xxxxx</td></tr>
+					</table>
+				</div>
+			</section>
+			<section class="col-xs-12 section-block summon-damage">
+				<div class="section-block-inner">
+					<table class="table table-bordered summons">
+						<tr><th>バハ</th><th>リヴァ</th><th>オル</th><th>ロレ</th><th>ウルス</th><th>タイタン</th><th>ワルプ</th><th>砲撃</th></tr>
+						<tr><td>70%</td><td>70%</td><td>50%</td><td>30%</td><td>15%</td><td>20%</td><td>15%</td><td>30%</td></tr>
+					</table>
+					<div class="stage-selector">
+						ダメージテーブル絞込：
+						<span class="stage active" data-stage="all">全ステージ</span>
+						<span class="stage" data-stage="ahg">朝平原</span>
+						<span class="stage" data-stage="hg">平原</span>
+						<span class="stage" data-stage="yhg">夜平原</span>
+						<span class="stage" data-stage="kkt">機甲都市</span>
+						<span class="stage" data-stage="sbk">砂漠</span>
+						<span class="stage" data-stage="kij">海上</span>
+					</div>
+					<table class="table table-bordered stage-table mb-10-imp">
+						<tr><th class="resources" rowspan="2"></th><th colspan="4" class="type">後タゲ</th><!-- th colspan="4" class="type">先タゲ召喚→部隊撃破（１部隊で交戦終了）</th --><th class="type">先タゲ</th></tr>
+						<tr><th class="num">残HP</th><th class="num">残部隊数</th><th class="num">残ユニ数</th><th><span style="color:#00B0FF;">部隊</span> / <span style="color:#E91E63;">ユニ残存</span>マップ</th><!-- th class="num">残HP</th><th class="num">残部隊数</th><th class="num">残ユニ数</th><th>部隊/ユニ残存割合</th --><th>出現部隊数</th></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk"><th class="resources">バハ</th><td class="num" id="baha-hp"></td><td class="num" id="baha-fc"></td><td class="num" id="baha-uc"></td><td class="mapping"><div class="forces" id="baha-mapping-forces"></div><div class="units" id="baha-mapping-units"></div></td><!-- td class="num" id="baha-add-hp"></td><td class="num" id="baha-add-fc"></td><td class="num" id="baha-add-uc"></td><td class="mapping" id="baha-add-mapping"><div class="forces" id="baha-add-mapping-forces"></div><div class="units" id="baha-add-mapping-units"></div></td --><td id="baha-tag"></td></tr>
+						<tr class="data-row" data-stage="all,sbk"><th class="resources">バハ(1/2)</th><td class="num" id="baha-h-hp"></td><td class="num" id="baha-h-fc"></td><td class="num" id="baha-h-uc"></td><td class="mapping"><div class="forces" id="baha-h-mapping-forces"></div><div class="units" id="baha-h-mapping-units"></div></td><!-- td class="num" id="baha-h-add-hp"></td><td class="num" id="baha-h-add-fc"></td><td class="num" id="baha-h-add-uc"></td><td class="mapping" id="baha-h-add-mapping"><div class="forces" id="baha-h-add-mapping-forces"></div><div class="units" id="baha-h-add-mapping-units"></div></td --><td id="baha-h-tag"></td></tr>
+						<tr class="data-row" data-stage="all,kij"><th class="resources">リヴァ</th><td class="num" id="levi-hp"></td><td class="num" id="levi-fc"></td><td class="num" id="levi-uc"></td><td class="mapping"><div class="forces" id="levi-mapping-forces"></div><div class="units" id="levi-mapping-units"></div></td><!-- td class="num" id="levi-add-hp"></td><td class="num" id="levi-add-fc"></td><td class="num" id="levi-add-uc"></td><td class="mapping"><div class="forces" id="levi-add-mapping-forces"></div><div class="units" id="levi-add-mapping-units"></div></td --><td id="levi-tag"></td></tr>
+						<tr class="data-row" data-stage="all,hg,yhg,kkt,sbk,kij"><th class="resources">オル</th><td class="num" id="or-hp"></td><td class="num" id="or-fc"></td><td class="num" id="or-uc"></td><td class="mapping"><div class="forces" id="or-mapping-forces"></div><div class="units" id="or-mapping-units"></div></td><!-- td class="num" id="or-add-hp"></td><td class="num" id="or-add-fc"></td><td class="num" id="or-add-uc"></td><td class="mapping"><div class="forces" id="or-add-mapping-forces"></div><div class="units" id="or-add-mapping-units"></div></td --><td id="or-tag"></td></tr>
+						<tr class="data-row" data-stage="all,sbk"><th class="resources">オル(1/2)</th><td class="num" id="or-h-hp"></td><td class="num" id="or-h-fc"></td><td class="num" id="or-h-uc"></td><td class="mapping"><div class="forces" id="or-h-mapping-forces"></div><div class="units" id="or-h-mapping-units"></div></td><!-- td class="num" id="or-h-add-hp"></td><td class="num" id="or-h-add-fc"></td><td class="num" id="or-h-add-uc"></td><td class="mapping"><div class="forces" id="or-h-add-mapping-forces"></div><div class="units" id="or-h-add-mapping-units"></div></td --><td id="or-h-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,kij"><th class="resources">ロレ</th><td class="num" id="lore-hp"></td><td class="num" id="lore-fc"></td><td class="num" id="lore-uc"></td><td class="mapping"><div class="forces" id="lore-mapping-forces"></div><div class="units" id="lore-mapping-units"></div></td><!-- td class="num" id="lore-add-hp"></td><td class="num" id="lore-add-fc"></td><td class="num" id="lore-add-uc"></td><td class="mapping"><div class="forces" id="lore-add-mapping-forces"></div><div class="units" id="lore-add-mapping-units"></div></td --><td id="lore-tag"></td></tr>
+						<tr class="data-row" data-stage="all,sbk"><th class="resources">ウルス</th><td class="num" id="vere-hp"></td><td class="num" id="vere-fc"></td><td class="num" id="vere-uc"></td><td class="mapping"><div class="forces" id="vere-mapping-forces"></div><div class="units" id="vere-mapping-units"></div></td><!-- td class="num" id="vere-add-hp"></td><td class="num" id="vere-add-fc"></td><td class="num" id="vere-add-uc"></td><td class="mapping"><div class="forces" id="vere-add-mapping-forces"></div><div class="units" id="vere-add-mapping-units"></div></td --><td id="vere-tag"></td></tr>
+						<tr class="data-row" data-stage="all,sbk"><th class="resources">ウルス(1/2)</th><td class="num" id="vere-h-hp"></td><td class="num" id="vere-h-fc"></td><td class="num" id="vere-h-uc"></td><td class="mapping"><div class="forces" id="vere-h-mapping-forces"></div><div class="units" id="vere-h-mapping-units"></div></td><!-- td class="num" id="vere-h-add-hp"></td><td class="num" id="vere-h-add-fc"></td><td class="num" id="vere-h-add-uc"></td><td class="mapping"><div class="forces" id="vere-h-add-mapping-forces"></div><div class="units" id="vere-h-add-mapping-units"></div></td --><td id="vere-h-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,kkt"><th class="resources">タイタン</th><td class="num" id="titn-hp"></td><td class="num" id="titn-fc"></td><td class="num" id="titn-uc"></td><td class="mapping"><div class="forces" id="titn-mapping-forces"></div><div class="units" id="titn-mapping-units"></div></td><!-- td class="num" id="titn-add-hp"></td><td class="num" id="titn-add-fc"></td><td class="num" id="titn-add-uc"></td><td class="mapping"><div class="forces" id="titn-add-mapping-forces"></div><div class="units" id="titn-add-mapping-units"></div></td --><td id="titn-tag"></td></tr>
+						<tr class="data-row" data-stage="all,yhg"><th class="resources">ワルプ</th><td class="num" id="walp-hp"></td><td class="num" id="walp-fc"></td><td class="num" id="walp-uc"></td><td class="mapping"><div class="forces" id="walp-mapping-forces"></div><div class="units" id="walp-mapping-units"></div></td><!-- td class="num" id="walp-add-hp"></td><td class="num" id="walp-add-fc"></td><td class="num" id="walp-add-uc"></td><td class="mapping"><div class="forces" id="walp-add-mapping-forces"></div><div class="units" id="walp-add-mapping-units"></div></td --><td id="walp-tag"></td></tr>
+						<tr class="data-row" data-stage="all,hg,kij"><th class="resources">オルロレ</th><td class="num" id="orlr-hp"></td><td class="num" id="orlr-fc"></td><td class="num" id="orlr-uc"></td><td class="mapping"><div class="forces" id="orlr-mapping-forces"></div><div class="units" id="orlr-mapping-units"></div></td><!-- td class="num" id="orlr-add-hp"></td><td class="num" id="orlr-add-fc"></td><td class="num" id="orlr-add-uc"></td><td class="mapping"><div class="forces" id="orlr-add-mapping-forces"></div><div class="units" id="orlr-add-mapping-units"></div></td --><td id="orlr-tag"></td></tr>
+						<tr class="data-row" data-stage="all,yhg"><th class="resources">オルワル</th><td class="num" id="orwl1-hp"></td><td class="num" id="orwl1-fc"></td><td class="num" id="orwl1-uc"></td><td class="mapping"><div class="forces" id="orwl1-mapping-forces"></div><div class="units" id="orwl1-mapping-units"></div></td><!-- td class="num" id="orwl1-add-hp"></td><td class="num" id="orwl1-add-fc"></td><td class="num" id="orwl1-add-uc"></td><td class="mapping"><div class="forces" id="orwl1-add-mapping-forces"></div><div class="units" id="orwl1-add-mapping-units"></div></td --><td id="orwl1-tag"></td></tr>
+						<tr class="data-row" data-stage="all,yhg"><th class="resources">オルワルx2</th><td class="num" id="orwl2-hp"></td><td class="num" id="orwl2-fc"></td><td class="num" id="orwl2-uc"></td><td class="mapping"><div class="forces" id="orwl2-mapping-forces"></div><div class="units" id="orwl2-mapping-units"></div></td><!-- td class="num" id="orwl2-add-hp"></td><td class="num" id="orwl2-add-fc"></td><td class="num" id="orwl2-add-uc"></td><td class="mapping"><div class="forces" id="orwl2-add-mapping-forces"></div><div class="units" id="orwl2-add-mapping-units"></div></td --><td id="orwl2-tag"></td></tr>
+						<tr class="data-row" data-stage="all,kij"><th class="resources">リヴァ砲撃</th><td class="num" id="lvbr1-hp"></td><td class="num" id="lvbr1-fc"></td><td class="num" id="lvbr1-uc"></td><td class="mapping"><div class="forces" id="lvbr1-mapping-forces"></div><div class="units" id="lvbr1-mapping-units"></div></td><!-- td class="num" id="lvbr1-add-hp"></td><td class="num" id="lvbr1-add-fc"></td><td class="num" id="lvbr1-add-uc"></td><td class="mapping"><div class="forces" id="lvbr1-add-mapping-forces"></div><div class="units" id="lvbr1-add-mapping-units"></div></td --><td id="lvbr1-tag"></td></tr>
+						<tr class="data-row" data-stage="all,kij"><th class="resources">リヴァ砲撃x2</th><td class="num" id="lvbr2-hp"></td><td class="num" id="lvbr2-fc"></td><td class="num" id="lvbr2-uc"></td><td class="mapping"><div class="forces" id="lvbr2-mapping-forces"></div><div class="units" id="lvbr2-mapping-units"></div></td><!-- td class="num" id="lvbr2-add-hp"></td><td class="num" id="lvbr2-add-fc"></td><td class="num" id="lvbr2-add-uc"></td><td class="mapping"><div class="forces" id="lvbr2-add-mapping-forces"></div><div class="units" id="lvbr2-add-mapping-units"></div></td --><td id="lvbr2-tag"></td></tr>
+						<tr class="data-row" data-stage="all,kij"><th class="resources">リヴァ砲撃x3</th><td class="num" id="lvbr3-hp"></td><td class="num" id="lvbr3-fc"></td><td class="num" id="lvbr3-uc"></td><td class="mapping"><div class="forces" id="lvbr3-mapping-forces"></div><div class="units" id="lvbr3-mapping-units"></div></td><!-- td class="num" id="lvbr3-add-hp"></td><td class="num" id="lvbr3-add-fc"></td><td class="num" id="lvbr3-add-uc"></td><td class="mapping"><div class="forces" id="lvbr3-add-mapping-forces"></div><div class="units" id="lvbr3-add-mapping-units"></div></td --><td id="lvbr3-tag"></td></tr>
+						<tr class="data-row" data-stage="all,hg,yhg,kkt,sbk,kij"><th class="resources">オル砲撃</th><td class="num" id="orbr1-hp"></td><td class="num" id="orbr1-fc"></td><td class="num" id="orbr1-uc"></td><td class="mapping"><div class="forces" id="orbr1-mapping-forces"></div><div class="units" id="orbr1-mapping-units"></div></td><!-- td class="num" id="orbr1-add-hp"></td><td class="num" id="orbr1-add-fc"></td><td class="num" id="orbr1-add-uc"></td><td class="mapping"><div class="forces" id="orbr1-add-mapping-forces"></div><div class="units" id="orbr1-add-mapping-units"></div></td --><td id="orbr1-tag"></td></tr>
+						<tr class="data-row" data-stage="all,hg,yhg,kkt,sbk,kij"><th class="resources">オル砲撃x2</th><td class="num" id="orbr2-hp"></td><td class="num" id="orbr2-fc"></td><td class="num" id="orbr2-uc"></td><td class="mapping"><div class="forces" id="orbr2-mapping-forces"></div><div class="units" id="orbr2-mapping-units"></div></td><!-- td class="num" id="orbr2-add-hp"></td><td class="num" id="orbr2-add-fc"></td><td class="num" id="orbr2-add-uc"></td><td class="mapping"><div class="forces" id="orbr2-add-mapping-forces"></div><div class="units" id="orbr2-add-mapping-units"></div></td --><td id="orbr2-tag"></td></tr>
+						<tr class="data-row" data-stage="all,hg,yhg,kkt,sbk,kij"><th class="resources">オル砲撃x3</th><td class="num" id="orbr3-hp"></td><td class="num" id="orbr3-fc"></td><td class="num" id="orbr3-uc"></td><td class="mapping"><div class="forces" id="orbr3-mapping-forces"></div><div class="units" id="orbr3-mapping-units"></div></td><!-- td class="num" id="orbr3-add-hp"></td><td class="num" id="orbr3-add-fc"></td><td class="num" id="orbr3-add-uc"></td><td class="mapping"><div class="forces" id="orbr3-add-mapping-forces"></div><div class="units" id="orbr3-add-mapping-units"></div></td --><td id="orbr3-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,kkt"><th class="resources">タイタン砲撃</th><td class="num" id="ttbr1-hp"></td><td class="num" id="ttbr1-fc"></td><td class="num" id="ttbr1-uc"></td><td class="mapping"><div class="forces" id="ttbr1-mapping-forces"></div><div class="units" id="ttbr1-mapping-units"></div></td><!-- td class="num" id="ttbr1-add-hp"></td><td class="num" id="ttbr1-add-fc"></td><td class="num" id="ttbr1-add-uc"></td><td class="mapping"><div class="forces" id="ttbr1-add-mapping-forces"></div><div class="units" id="ttbr1-add-mapping-units"></div></td --><td id="ttbr1-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,kkt"><th class="resources">タイタン砲撃x2</th><td class="num" id="ttbr2-hp"></td><td class="num" id="ttbr2-fc"></td><td class="num" id="ttbr2-uc"></td><td class="mapping"><div class="forces" id="ttbr2-mapping-forces"></div><div class="units" id="ttbr2-mapping-units"></div></td><!-- td class="num" id="ttbr2-add-hp"></td><td class="num" id="ttbr2-add-fc"></td><td class="num" id="ttbr2-add-uc"></td><td class="mapping"><div class="forces" id="ttbr2-add-mapping-forces"></div><div class="units" id="ttbr2-add-mapping-units"></div></td --><td id="ttbr2-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,kkt"><th class="resources">タイタン砲撃x3</th><td class="num" id="ttbr3-hp"></td><td class="num" id="ttbr3-fc"></td><td class="num" id="ttbr3-uc"></td><td class="mapping"><div class="forces" id="ttbr3-mapping-forces"></div><div class="units" id="ttbr3-mapping-units"></div></td><!-- td class="num" id="ttbr3-add-hp"></td><td class="num" id="ttbr3-add-fc"></td><td class="num" id="ttbr3-add-uc"></td><td class="mapping"><div class="forces" id="ttbr3-add-mapping-forces"></div><div class="units" id="ttbr3-add-mapping-units"></div></td --><td id="ttbr3-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,kkt"><th class="resources">タイタンx2砲撃</th><td class="num" id="tt2br1-hp"></td><td class="num" id="tt2br1-fc"></td><td class="num" id="tt2br1-uc"></td><td class="mapping"><div class="forces" id="tt2br1-mapping-forces"></div><div class="units" id="tt2br1-mapping-units"></div></td><!-- td class="num" id="ttbr1-add-hp"></td><td class="num" id="ttbr1-add-fc"></td><td class="num" id="ttbr1-add-uc"></td><td class="mapping"><div class="forces" id="ttbr1-add-mapping-forces"></div><div class="units" id="ttbr1-add-mapping-units"></div></td --><td id="tt2br1-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,kkt"><th class="resources">タイタンx2砲撃x2</th><td class="num" id="tt2br2-hp"></td><td class="num" id="tt2br2-fc"></td><td class="num" id="tt2br2-uc"></td><td class="mapping"><div class="forces" id="tt2br2-mapping-forces"></div><div class="units" id="tt2br2-mapping-units"></div></td><!-- td class="num" id="ttbr2-add-hp"></td><td class="num" id="ttbr2-add-fc"></td><td class="num" id="ttbr2-add-uc"></td><td class="mapping"><div class="forces" id="ttbr2-add-mapping-forces"></div><div class="units" id="ttbr2-add-mapping-units"></div></td --><td id="tt2br2-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,kkt"><th class="resources">タイタンx2砲撃x3</th><td class="num" id="tt2br3-hp"></td><td class="num" id="tt2br3-fc"></td><td class="num" id="tt2br3-uc"></td><td class="mapping"><div class="forces" id="tt2br3-mapping-forces"></div><div class="units" id="tt2br3-mapping-units"></div></td><!-- td class="num" id="ttbr3-add-hp"></td><td class="num" id="ttbr3-add-fc"></td><td class="num" id="ttbr3-add-uc"></td><td class="mapping"><div class="forces" id="ttbr3-add-mapping-forces"></div><div class="units" id="ttbr3-add-mapping-units"></div></td --><td id="tt2br3-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">砲撃</th><td class="num" id="brag1-hp"></td><td class="num" id="brag1-fc"></td><td class="num" id="brag1-uc"></td><td class="mapping"><div class="forces" id="brag1-mapping-forces"></div><div class="units" id="brag1-mapping-units"></div></td><!-- td class="num" id="brag1-add-hp"></td><td class="num" id="brag1-add-fc"></td><td class="num" id="brag1-add-uc"></td><td class="mapping"><div class="forces" id="brag1-add-mapping-forces"></div><div class="units" id="brag1-add-mapping-units"></div></td --><td id="brag1-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">砲撃x2</th><td class="num" id="brag2-hp"></td><td class="num" id="brag2-fc"></td><td class="num" id="brag2-uc"></td><td class="mapping"><div class="forces" id="brag2-mapping-forces"></div><div class="units" id="brag2-mapping-units"></div></td><!-- td class="num" id="brag2-add-hp"></td><td class="num" id="brag2-add-fc"></td><td class="num" id="brag2-add-uc"></td><td class="mapping"><div class="forces" id="brag2-add-mapping-forces"></div><div class="units" id="brag2-add-mapping-units"></div></td --><td id="brag2-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">砲撃x3</th><td class="num" id="brag3-hp"></td><td class="num" id="brag3-fc"></td><td class="num" id="brag3-uc"></td><td class="mapping"><div class="forces" id="brag3-mapping-forces"></div><div class="units" id="brag3-mapping-units"></div></td><!-- td class="num" id="brag3-add-hp"></td><td class="num" id="brag3-add-fc"></td><td class="num" id="brag3-add-uc"></td><td class="mapping"><div class="forces" id="brag3-add-mapping-forces"></div><div class="units" id="brag3-add-mapping-units"></div></td --><td id="brag3-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">砲撃x4</th><td class="num" id="brag4-hp"></td><td class="num" id="brag4-fc"></td><td class="num" id="brag4-uc"></td><td class="mapping"><div class="forces" id="brag4-mapping-forces"></div><div class="units" id="brag4-mapping-units"></div></td><!-- td class="num" id="brag3-add-hp"></td><td class="num" id="brag3-add-fc"></td><td class="num" id="brag3-add-uc"></td><td class="mapping"><div class="forces" id="brag3-add-mapping-forces"></div><div class="units" id="brag3-add-mapping-units"></div></td --><td id="brag4-tag"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">砲撃x5</th><td class="num" id="brag5-hp"></td><td class="num" id="brag5-fc"></td><td class="num" id="brag5-uc"></td><td class="mapping"><div class="forces" id="brag5-mapping-forces"></div><div class="units" id="brag5-mapping-units"></div></td><!-- td class="num" id="brag3-add-hp"></td><td class="num" id="brag3-add-fc"></td><td class="num" id="brag3-add-uc"></td><td class="mapping"><div class="forces" id="brag3-add-mapping-forces"></div><div class="units" id="brag3-add-mapping-units"></div></td --><td id="brag5-tag"></td></tr>
+					</table>
+					<!-- table class="table table-bordered stage-table tbl-w-50">
+						<tr><th>先タゲ召喚（交戦続行）</th><th class="num">出現部隊数</th></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk"><th class="resources">タゲバハ</th><td class="num" id="baha-fc-c"></td></tr>
+						<tr class="data-row" data-stage="all,sbk"><th class="resources">タゲバハ(1/2)</th><td class="num" id="baha-h-fc-c"></td></tr>
+						<tr class="data-row" data-stage="all,kij"><th class="resources">タゲリヴァ</th><td class="num" id="levi-fc-c"></td></tr>
+						<tr class="data-row" data-stage="all,hg,yhg,kkt,sbk,kij"><th class="resources">タゲオル</th><td class="num" id="or-fc-c"></td></tr>
+						<tr class="data-row" data-stage="all,sbk"><th class="resources">タゲオル(1/2)</th><td class="num" id="or-h-fc-c"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,kij"><th class="resources">タゲロレ</th><td class="num" id="lore-fc-c"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">タゲ砲撃</th><td class="num" id="brag1-fc-c"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">タゲ砲撃x2</th><td class="num" id="brag2-fc-c"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">タゲ砲撃x3</th><td class="num" id="brag3-fc-c"></td></tr>
+					</table>
+					<table class="table table-bordered stage-table tbl-w-50">
+						<tr><th>召喚タゲ召喚（交戦続行）</th><th class="num">出現部隊数</th></tr>
+						<tr class="data-row" data-stage="all,hg,kij"><th class="resources">オルタゲロレ</th><td class="num" id="otl-fc"></td></tr>
+						<tr class="data-row" data-stage="all,yhg"><th class="resources">オルタゲワル</th><td class="num" id="otw-fc"></td></tr>
+						<tr class="data-row" data-stage="all,hg,yhg,kkt,sbk,kij"><th class="resources">オルタゲ砲撃</th><td class="num" id="otb1-fc"></td></tr>
+						<tr class="data-row" data-stage="all,hg,yhg,kkt,sbk,kij"><th class="resources">オルタゲ砲撃x2</th><td class="num" id="otb2-fc"></td></tr>
+						<tr class="data-row" data-stage="all,hg,yhg,kkt,sbk,kij"><th class="resources">オルタゲ砲撃x3</th><td class="num" id="otb3-fc"></td></tr>
+						<tr class="data-row" data-stage="all,kij"><th class="resources">リヴァタゲ砲撃</th><td class="num" id="ltb1-fc"></td></tr>
+						<tr class="data-row" data-stage="all,kij"><th class="resources">リヴァタゲ砲撃x2</th><td class="num" id="ltb2-fc"></td></tr>
+						<tr class="data-row" data-stage="all,kij"><th class="resources">リヴァタゲ砲撃x3</th><td class="num" id="ltb3-fc"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">砲撃タゲ砲撃</th><td class="num" id="btb1-fc"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">砲撃タゲ砲撃x2</th><td class="num" id="btb2-fc"></td></tr>
+						<tr class="data-row" data-stage="all,ahg,hg,yhg,kkt,sbk,kij"><th class="resources">砲撃タゲ砲撃x3</th><td class="num" id="btb3-fc"></td></tr>
+					</table -->
+					<div style="clear: both;"></div>
+				</div>
+			</section>
+			<section class="col-xs-12 section-block cookie-manage">
+				<div class="section-block-inner">
+					<h2>localStorage管理</h2>
+					<p>localStorageの読み込みに失敗した場合、localStorageのリロードを試してみてください。<br>削除したlocalStorageは復元できないので注意してください。（Export Fileがあれば復元できます）<br>Export local storage data to fileでLocal Storageの情報をファイル出力できます。<br>Import local storage data from fileで出力したファイルからLocal Storage情報を復元できます。</p>
+					<input type="button" class="btn btn-sm btn-default" id="cookie-reload" value="localStorageリロード">
+					<input type="button" class="btn btn-sm btn-danger" value="localStorage全削除"  data-toggle="modal" data-target="#cookie-delete-confirm">
+					<a href="#" download="ish_deck.json" class="btn btn-sm btn-default" id="export-storage-data">Export local storage data to file</a><br><br>
+					<input type="file" id="storage-file" style="margin:0 0 10px 0;display:inline-block;border:1px solid #000;padding:2px;background-color:#fff;" />
+					<a href="#" class="btn btn-sm btn-default" id="import-storage-data">Import local storage data from file</a>
+				</div>
+			</section>
+			<section class="col-xs-12 section-block attention">
+				<div class="section-block-inner">
+					<h2>注意事項</h2>
+					<ul>
+						<li>当サイトはJavascript及びlocalStorageを利用しています。Javascript及びlocalStorageまたはその一部が利用できない場合、正常に利用できない場合があります。</li>
+						<li>当サイトはHTML5に依存した機能を利用しております。最新のブラウザではない場合、一部または全ての機能が利用できない可能性があります。</li>
+						<li>当サイトはPC（非タッチデバイス）に依存した機能を利用しております。タッチデバイス環境下では一部または全ての機能が利用できない可能性があります。</li>
+						<li>利用の結果生じた損害について、一切責任を負いません。</li>
+						<li>あなたの適用される法令に照らして、本サイトの利用が合法であることを保証しません。</li>
+						<li>コンテンツとして提供する全てのデータについて、内容の合法性・正確性等、あらゆる点において保証しません。</li>
+						<li>事前の予告無く、コンテンツの提供を中止する可能性があります。</li>
+					</ul>
+				</div>
+			</section>
+			<section class="col-xs-12 section-block bug">
+				<div class="section-block-inner">
+					<h2>既知の不具合</h2>
+					<ul>
+						<li>一部隊に4ユニット以上設定しようとすると、部隊構成とデータ算出結果の整合性が取れない。<br><span>不具合回避策：ユニット数が3より多く設定しないようにしてください。</span></li>
+					</ul>
+				</div>
+			</section>
+		</article>
+		<!-- Attention -->
+		<div class="modal fade" id="device-error">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title">注意事項</h4>
+					</div>
+					<div class="modal-body">
+						<p>当ツールはPC（タッチ以外で操作できる端末）向けになります。スマートフォン、タブレット、一部のタッチデバイスでは正常に動作しません。</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Default unit add -->
+		<div class="modal fade default-unit-add" id="default-unit-add" tabindex="-1" role="dialog" aria-labelledby="default-unit-ad-label" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="default-unit-add-label">既定ユニット追加</h4>
+					</div>
+					<div class="modal-body">
+						<!-- 石MAX -> +1500 -->
+						<h5>☆1</h5>
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆1赤銅剣闘士ラガシュ(Lv1)" data-hp="55">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆1麗炎のフランベルジェ(Lv1)" data-hp="500">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆1連星のナイフ(Lv1)" data-hp="630">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆1碧夢のコルセスカ(Lv1)" data-hp="540">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆1旋裂のスリング(Lv1)" data-hp="620">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆1散華のレイピア(Lv1)" data-hp="580">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆1重炎のファラリカ(Lv1)" data-hp="620">
+						<h5>☆2</h5>
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆2白銀剣闘士ラガシュ(Lv1)" data-hp="777">
+						<h5>☆4</h5>
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆4重装機甲兵ゴリアテ+0(Lv1)" data-hp="3400">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆4重装機甲兵ゴリアテ+1(Lv1)" data-hp="3740">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆4重装機甲兵ゴリアテ+1(LvMAX)" data-hp="8490">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆4重装機甲兵ゴリアテ+2(LvMAX)" data-hp="9950">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆4調和の使者フィレモン+0(Lv1)" data-hp="2500">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆4調和の使者フィレモン+2(Lv1)" data-hp="3030">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆4調和の使者フィレモン+4(LvMAX)" data-hp="8700">
+						<h5>☆6</h5>
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6予言の女神フリッグ+0(Lv1)" data-hp="3500">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6凛然たる天眼ディア+0(Lv1)" data-hp="3930">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6孤高の荒御魂イヌガミ+0(Lv1)" data-hp="4300">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6春桜の祭神サクラヒメ+0(Lv1)" data-hp="2600">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6春霞の女神サホヒメ+0(Lv1)" data-hp="6300">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6春霞の女神サホヒメ+4(LvMax石最大)" data-hp="18180">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6夏祭の水仙華ナルキッソス+0(Lv1)" data-hp="5640">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6伊賀忍のモモチ+0(Lv1)" data-hp="3000">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆6下っ端悪魔プリニー+0(Lv1)" data-hp="3700">
+						<h5>☆7</h5>
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7小正月の餅つき団長フィン+0(Lv1)" data-hp="8500">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7小正月の餅つき団長フィン+2(LvMAX石最大)" data-hp="20680">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7祝宴の堕天使ルシファー+0(Lv1)" data-hp="7640">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7夜霧の殺戮者ジャック+0(Lv1)" data-hp="6040">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7湖の聖騎士ランスロット+0(Lv1)" data-hp="6400">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7湖の聖騎士ランスロット+3(Lv1)" data-hp="8600">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7湖の聖騎士ランスロット+4(LvMAX石最大)" data-hp="19250">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7南の善き魔女グリンダ+2(LvMax石最大)" data-hp="19350">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7桜樹の姫神キルニス+2(LvMax石最大)" data-hp="20230">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7初夏の邪竜ティアマト+2(LvMax石最大)" data-hp="20190">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7蠱惑の王妃グィネヴィア+2(LvMax石最大)" data-hp="19620">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7蝙蝠の魔女カマソッソ+2(LvMax石最大)" data-hp="19070">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7日輪の聖騎士ガウェイン+4(LvMax石最大)" data-hp="19830">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7憤怒の邪竜ニーズヘッグ+4(LvMax石最大)" data-hp="19160">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7永遠の歌姫テルプシコラ+4(LvMax石最大)" data-hp="19300">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7拷血の姫君ウピエル+4(LvMax石最大)" data-hp="20440">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7不和と災いの女神エリス+4(LvMax石最大)" data-hp="22750">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7御饌津狐神ウカノミタマ+2(LvMax石最大)" data-hp="19500">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7聖夜祭のチルチル＆ミチル+0(Lv1)" data-hp="8820">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7満月の姫兎ギョクト+0(Lv1)" data-hp="6870">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="☆7刻追いのホワイトラビット+0(Lv1)" data-hp="6650">
+						<h5>P☆7</h5>
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7初夏の林檎女神イズン(LvMax石最大)" data-hp="19750">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7希望の聖女ジャンヌダルク(LvMax石最大)" data-hp="20000">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7不滅の光神バルドル(LvMax石最大)" data-hp="22500">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7常夏の黒魔女ニーナ(LvMax石最大)" data-hp="23000">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7白面金毛九尾ダッキ(LvMax石最大)" data-hp="25000">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7銀狼従えし真祖ウピエル(LvMax石最大)" data-hp="19500">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7狂愛の聖女ジルドレ(LvMax石最大)" data-hp="24000">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7地の果ての海神オケアノス(LvMax石最大)" data-hp="21000">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7万聖節の賢者バベッジ(LvMax石最大)" data-hp="23500">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7聖龍蜀漢皇帝リュウビ(Lv1)" data-hp="12750">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7聖龍蜀漢皇帝リュウビ(LvMax石最大)" data-hp="23750">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7聖前祭の魔女メル(Lv1)" data-hp="8,250">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7聖前祭の魔女メル(LvMax石最大)" data-hp="19250">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7死天悪路明王アテルイ(LvMax石最大)" data-hp="22750">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7初春の林檎女神イズン(Lv1)" data-hp="12250">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7禍津千年九尾タマモ(Lv1)" data-hp="12000">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7叡智の守護者ジェフティ(Lv1)" data-hp="13250">
+						<input type="button" class="btn btn-md btn-default add-sample-unit" value="P☆7原初の時神クロノス(Lv1)" data-hp="14250">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Cookie delete -->
+		<div class="modal fade" id="cookie-delete-confirm" tabindex="-1" role="dialog" aria-labelledby="cookie-delete-confirm-label" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="cookie-delete-confirm-label">localStorage情報全削除</h4>
+					</div>
+					<div class="modal-body">
+						<p>localStorage情報を全削除するとユニット一覧、各防衛デッキ情報が全て削除されます。<br>一度削除するとlocalStorage情報の復元は行えません。localStorage削除後、新しくlocalStorage情報を作成します。</p>
+						<p>Chromeの場合、<br>「C:\Documents and Settings\ユーザ名\Local Settings\Application Data\Google\Chrome\User Data\Default\Local Storage」<br>辺りに格納されます。</p>
+						<p>Firefoxの場合、Cookieと同じ場所に格納されるっぽいです。IEとEdgeはよくわかんないです。</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" id="cookie-all-delete">削除実行</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">キャンセル</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
